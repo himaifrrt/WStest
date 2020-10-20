@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+    <script>
+        const payment = 450;
+        let n = +prompt("Пожалуйста введите количество дней", 1);
+        let dayInMonth = +prompt("Пожалуйста введите количество дней в месяце", 30);
+        const calculateCost = () => {
+            let oneDayCost = payment / dayInMonth;
+            let result = oneDayCost * n
+            console.log(result);
+        };
+        if (!n) {
+            console.error('Вы ввели некоректное количество дней')
+        } else if (!dayInMonth) {
+            console.error('Вы ввели некоректное количество дней в месяце')
+        } else calculateCost();
+    </script>
+</body>
+
+</html>

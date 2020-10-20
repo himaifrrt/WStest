@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+</head>
+
+<body>
+  <script>
+    let object = {
+      a: 1,
+      b: '2',
+      c: 3,
+      d: '4',
+      e: 5,
+      f: '6',
+      g: '7',
+      h: 8,
+      i: 9,
+    };
+    let objKeySum = 0;
+    for (let key in object) {
+      if (typeof object[key] === 'number') {
+        objKeySum = objKeySum + object[key] * 2;// умножать впринципе можно и в логе..
+      }
+    }
+    console.log('Сумма ключей объектов умноженная на 2 =', objKeySum)
+  </script>
+</body>
+
+</html>

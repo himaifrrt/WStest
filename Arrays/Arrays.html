@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+</head>
+
+<body>
+  <script>
+    (function arrays() {
+      let array = [];
+      let minValue = +prompt('Введите минимальное значение', 0);
+      let maxValue = +prompt('Введите максимальное значение', 0);
+      console.log('minValue',typeof minValue, minValue)
+      console.log('maxValue',typeof maxValue, maxValue)
+      if (isNaN(minValue) || isNaN(maxValue)) return console.error('Вы ввели неверное значение');
+      for (let i = minValue; i <= maxValue; i++) {
+        array.push(i);
+      }
+      console.log('Массив', array);
+      console.log('Количество символов в массиве', array.join().length);
+      let clonedArray = [...array];
+      let filteredClonedArray = () => {// функцию, так функцию 🤷‍♂️
+        clonedArray = clonedArray.filter(i => {
+          if (i > 1) {
+            return (i - 1) % 3 === 0;
+          } else if (i < -1) {
+            return (i + 1) % 3 === 0;
+          }
+        });
+        clonedArray
+      };
+      filteredClonedArray();
+      console.log('Отфильтрованный массив', clonedArray);
+    })()
+  </script>
+</body>
+
+</html>

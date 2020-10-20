@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style type="text/css">
+    .body {
+      margin: 0;
+    }
+
+    .wrapper {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    input {
+      margin: 0 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <form class='wrapper'>
+    <span>FROM</span>
+    <input class='from' type='time' />
+    <span>TO</span>
+    <input class='to' type='time' />
+  </form>
+  <script>
+    let form = document.forms[0];
+    let fromInput = form.elements[0];
+    let toInput = form.elements[1];
+    let fromValue = '';
+    let toValue = '';
+    const timeLine = [
+      { timeTo: 0, isAvailable: true },
+      { timeTo: 1, isAvailable: false },
+      { timeTo: 2, isAvailable: false },
+      { timeTo: 3, isAvailable: true },
+      { timeTo: 4, isAvailable: true },
+      { timeTo: 5, isAvailable: true },
+      { timeTo: 6, isAvailable: true },
+      { timeTo: 7, isAvailable: true },
+      { timeTo: 8, isAvailable: true },
+      { timeTo: 9, isAvailable: true },
+      { timeTo: 10, isAvailable: true },
+      { timeTo: 11, isAvailable: false },
+      { timeTo: 12, isAvailable: true },
+      { timeTo: 13, isAvailable: false },
+      { timeTo: 14, isAvailable: false },
+      { timeTo: 15, isAvailable: false },
+      { timeTo: 16, isAvailable: false },
+      { timeTo: 17, isAvailable: false },
+      { timeTo: 18, isAvailable: false },
+      { timeTo: 19, isAvailable: false },
+      { timeTo: 20, isAvailable: false },
+      { timeTo: 21, isAvailable: true },
+      { timeTo: 22, isAvailable: true },
+      { timeTo: 23, isAvailable: true },
+    ];
+    const onChange = (inputName) => {
+      switch (inputName) {
+        case 'fromInput': fromValue = fromInput.value; break;
+        case 'toInput': toValue = toInput.value; break;
+      };
+      handleCheck();
+    };
+    const handleCheck = () => {
+      if (fromValue && toValue) {
+        let date = new Date();
+        let fromValueArray = fromValue.split(':');
+        let toValueArray = toValue.split(':');
+        let startDate = new Date(date.setHours(+fromValueArray[0], +fromValueArray[1]));
+        let endDate = new Date(date.setHours(+toValueArray[0], +toValueArray[1]));
+        if (+toValueArray[0] < fromValueArray[0]) {
+          endDate.setDate(endDate.getDate() + 1);
+        }
+        let time = startDate;
+        while (time.getTime() < endDate.getTime()) {
+          let isAvailable = timeLine.find(i => i.timeTo === time.getHours()).isAvailable;
+          if (!isAvailable) return console.error('Не доступно');
+          time.setHours(time.getHours() + 1);
+        }
+        return console.log('Доступно');
+      }
+    }
+    fromInput.oninput = () => onChange('fromInput');
+    toInput.oninput = () => onChange('toInput');
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Place Autocomplete</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4RjQvK8Hnp65hjd8qr19JqDU8KKvYIQQ&callback=initialize&libraries=places&v=weekly"
+    defer>
+    </script>
+  <style>
+    .wrapper {
+        width: 50%;
+        margin: 0 auto;
+    }
+  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <script type="text/javascript">
+    function initialize() {
+      let input = document.getElementById('pac-input');
+      let autocomplete = new google.maps.places.Autocomplete(input);
+      google.maps.event.addListener(autocomplete, 'place_changed', () => {
+        let place = autocomplete.getPlace();
+        let latitude = place.geometry.location.lat();
+        let longitude = place.geometry.location.lng();
+        getWeather(latitude, longitude);
+      });
+    }
+  </script>
+</head>
+
+<body>
+  <div class="wrapper">
+    <input id="pac-input" autofocus class="form-control" type="text" placeholder="Enter a location" />
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Temperature (Celsium)</th>
+          <th scope="col">Weather description</th>
+        </tr>
+      </thead>
+      <tbody class="table-body"></tbody>
+    </table>
+  </div>
+  <script>
+    const table = document.querySelectorAll('.table-body')[0];
+    let dayArray = [];
+    const getWeather = (latitude, longitude) => {
+      let xhr = new XMLHttpRequest();
+      xhr.open('GET', `https://api.weatherbit.io/v2.0/forecast/daily?lat=${latitude}&lon=${longitude}&key=3fd71fd2db9b461b93c59de2e06066b6`, false);
+      xhr.send();
+
+      if (xhr.status != 200) {
+        console.warn(xhr.status + ': ' + xhr.statusText);
+      } else {
+        dayArray = JSON.parse(xhr.responseText).data;
+        generateTable();
+      }
+    };
+    const generateTable = () => {
+      table.innerHTML = '';
+      dayArray.map((i, idx) => {
+        let col = document.createElement('tr');
+        let dateRow = document.createElement('td');
+        let temperatureRow = document.createElement('td');
+        let descriptionRow = document.createElement('td');
+        dateRow.innerText = i.datetime;
+        dateRow.className = 'date';
+        col.appendChild(dateRow);// добавляю столбец даты
+        temperatureRow.innerText = i.temp;
+        temperatureRow.className = 'temperature';
+        col.appendChild(temperatureRow);// добавляю столбец температуры
+        descriptionRow.innerText = i.weather.description;
+        descriptionRow.className = 'description';
+        col.appendChild(descriptionRow);// добавляю столбец описания
+        table.appendChild(col);
+      });
+    };
+  </script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
